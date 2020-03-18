@@ -4,7 +4,6 @@ const mongoose        = require('mongoose')
 const express         = require('express')
 const bodyParser      = require("body-parser");
 const path            = require('path');
-const fs              = require('fs');
 
 // ME
 const userController  = require('./controllers/user');
@@ -26,14 +25,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-app.get('/', function(req,res){
-  fs.readFile('./index.html', function (err, html) {
-    if (err) throw err;    
-    res.writeHeader(200, {"Content-Type": "text/html"});  
-    res.write(html);  
-    res.end();  
-  })
-})
+app.get('/', (req, res, next) => res.sendFile(path.join(__dirname, 'index.html')) ) ;
 
 app.get('/:userId',function(req,res){
   res.sendFile(path.join(__dirname+'/index.html'));
@@ -73,7 +65,7 @@ app.delete('/positions', function(re,res){
   .then( users => res.json(users))
   .catch( err => res.status(401).send(err))
 });
-app.listen(3000,function(){
+app.listen(process.env.PORT,function(){
   console.log("Started on PORT 3000");
 })
 
