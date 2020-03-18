@@ -10,7 +10,7 @@ const userController  = require('./controllers/user');
 const positionController  = require('./controllers/position');
 
 
-mongoose.connect('mongodb+srv://admin:12345@cluster0-xkvkh.mongodb.net/raspberry?retryWrites=true&w=majority',  { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URL,  { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection;
 db.on('error', handleError);
 db.once('open', function() {
