@@ -62,7 +62,7 @@ app.delete('/api/positions', function(re,res){
 var htmlPath = path.join(__dirname, 'html');
 app.use('/:userId', express.static(htmlPath));
 
-var server = app.listen(3002,function(){
+var server = app.listen(process.env.PORT,function(){
   var port = server.address().port;
   console.log('listening on port:'+port);
 })
