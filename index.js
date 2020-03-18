@@ -25,17 +25,13 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-app.get('/', (req, res, next) => res.sendFile(path.join(__dirname, 'index.html')) ) ;
 
-app.get('/:userId',function(req,res){
-  res.sendFile(path.join(__dirname+'/index.html'));
-});
-app.get('/users',function(req,res){
+app.get('/api/users',function(req,res){
   return userController.getAllUsers()
   .then( users => res.json(users))
   .catch( err => res.status(401).send(err))
 });
-app.post('/users',function(req,res){
+app.post('/api/users',function(req,res){
   const user = req.body;
   console.log(user);
   return userController.createUser(user)
@@ -43,10 +39,7 @@ app.post('/users',function(req,res){
   .catch( err => res.status(401).send(err))
 });
 
-
-
-
-app.post('/positions/:userId',function(req,res){
+app.post('/api/positions/:userId',function(req,res){
   const newPositions = req.body;
   const userId = req.params.userId;
   console.log(newPositions);
@@ -54,19 +47,24 @@ app.post('/positions/:userId',function(req,res){
   .then( position => res.json(position))
   .catch( err => res.status(401).send(err))
 });
-app.get('/positions/:userId',function(req,res){
+app.get('/api/positions/:userId',function(req,res){
   const userId = req.params.userId;
   return positionController.getPositionsByUserId(userId)
   .then( users => res.json(users))
   .catch( err => res.status(401).send(err))
 });
-app.delete('/positions', function(re,res){
+app.delete('/api/positions', function(re,res){
   return positionController.deleteDB()
   .then( users => res.json(users))
   .catch( err => res.status(401).send(err))
 });
-app.listen(process.env.PORT,function(){
-  console.log("Started on PORT 3000");
+
+var htmlPath = path.join(__dirname, 'html');
+app.use('/:userId', express.static(htmlPath));
+
+var server = app.listen(3002,function(){
+  var port = server.address().port;
+  console.log('listening on port:'+port);
 })
 
 function handleError(error){
