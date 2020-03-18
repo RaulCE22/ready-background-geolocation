@@ -59,8 +59,8 @@ app.delete('/api/positions', function(re,res){
   .catch( err => res.status(401).send(err))
 });
 
-// var htmlPath = path.join(__dirname, 'html');
-// app.use('/:userId', express.static(htmlPath));
+var htmlPath = path.join(__dirname, 'html');
+app.use('/:userId', express.static(htmlPath));
 
 var server = app.listen(process.env.PORT,function(){
   var port = server.address().port;
